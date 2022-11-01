@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Post
 
+<<<<<<< HEAD
 POSTS = [
   {
         "id": 1,
@@ -65,3 +66,13 @@ def update_post(id, new_post):
     else:
         # Forces 204 response by main module
         return True
+=======
+def delete_post(id):
+  """Delete Post"""
+  with sqlite3.connect("./db.sqlite3") as conn:
+    db_cursor = conn.cursor()
+    db_cursor.execute("""
+    DELETE from post
+    WHERE id = ?                
+    """, (id, ))
+>>>>>>> main
