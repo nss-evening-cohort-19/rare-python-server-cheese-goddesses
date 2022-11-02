@@ -1,11 +1,7 @@
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-<<<<<<< HEAD
-from views.post_requests import (delete_post, update_post)
-=======
-from views import delete_post, get_single_post
->>>>>>> main
+from views import (delete_post, get_single_post, get_all_posts, update_post)
 from views.user import create_user, login_user
 
 
@@ -55,8 +51,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
-        pass
+        """GET Posts"""
+        self._set_headers(200)
+        response = {}
+        parsed = self.parse_url(self.path)
+        if '?' not in self.path:
+            (resource, id) = parsed
+            if resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
+        self.wfile.write(response.encode())
 
 
     def do_POST(self):
