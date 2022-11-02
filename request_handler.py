@@ -9,8 +9,9 @@ from views.post_requests import create_post
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self,path):
         """Parse the url into the resource and id"""
+        parsed_url = urlparse(path)
         path_params = self.path.split('/')
         resource = path_params[1]
         if '?' in resource:

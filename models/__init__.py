@@ -1,2 +1,2 @@
 from .comment import Comment
-from .post import Post 
+from .post import Posts 
