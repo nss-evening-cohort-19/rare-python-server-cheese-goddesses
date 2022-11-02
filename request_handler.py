@@ -1,6 +1,7 @@
+from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import delete_post
+from views.post_requests import (delete_post, update_post)
 from views.user import create_user, login_user
 from views.post_requests import create_post
 
@@ -80,8 +81,26 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        """to update a post, makes a put request to the server"""
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+        
+        print(post_body)
+        
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+        success = False
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+
+        # rest of the elif's
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
