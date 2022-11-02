@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import delete_post
+from views import delete_post, get_single_post
 from views.user import create_user, login_user
 
 
