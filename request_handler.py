@@ -75,10 +75,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
-
+        
+        print(post_body)
+        
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
-
         success = False
 
         if resource == "posts":
