@@ -88,3 +88,25 @@ CREATE TABLE "Categories" (
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+
+
+SELECT * from Posts;
+
+INSERT INTO Posts (
+  user_id,
+  category_id,
+  title,
+  publication_date,
+  image_url,
+  content,
+  approved
+)
+VALUES (
+  1,
+  6,
+  "Bootcamps",
+  "10/11/2022",
+  "https://www.northeastern.edu/graduate/blog/wp-content/uploads/2019/05/coding-bootcamp.jpg",
+  "Lorem ipsum dolor sit amet, consectetur adipiscing",
+  True
+);
