@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (delete_post, get_single_post, get_all_posts, update_post)
 from views.user import create_user, login_user
+from views.post_requests import create_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -69,9 +70,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         """Make a post request to the server"""
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
-        post_body = json.loads(self.rfile.read(content_len))
-        response = ''
-        resource, _ = self.parse_url()
+        post_body = self.rfile.read(content_len)
+        
+        post_body = json.loads(post_body)
+        
+        (resource, id) = self.parse_url(self.path)
+        
+        new_post = None
+        
+        if resource == "posts":
+            new_post = create_post(post_body)
+            
+        self.wfile.write(f"{new_post}".encode())
 
         if resource == 'login':
             response = login_user(post_body)
