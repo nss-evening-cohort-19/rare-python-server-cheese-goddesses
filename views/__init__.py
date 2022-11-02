@@ -1,1 +1,1 @@
-from .post_requests import delete_post, update_post
+from .post_requests import delete_post,get_single_post,update_post

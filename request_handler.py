@@ -1,7 +1,11 @@
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+<<<<<<< HEAD
 from views.post_requests import (delete_post, update_post)
+=======
+from views import delete_post, get_single_post
+>>>>>>> main
 from views.user import create_user, login_user
 
 
