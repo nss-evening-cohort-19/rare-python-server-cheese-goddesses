@@ -1,34 +1,31 @@
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import (delete_post, get_single_post, get_all_posts, update_post)
+from views import (delete_post, get_single_post, get_all_posts, update_post, create_post)
 from views.user import create_user, login_user
-from views.post_requests import create_post
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self, path):
         """Parse the url into the resource and id"""
-        path_params = self.path.split('/')
+        parsed_url = urlparse(path)
+        path_params = parsed_url.path.split('/')
         resource = path_params[1]
-        if '?' in resource:
-            param = resource.split('?')[1]
-            resource = resource.split('?')[0]
-            pair = param.split('=')
-            key = pair[0]
-            value = pair[1]
-            return (resource, key, value)
-        else:
-            id = None
-            try:
-                id = int(path_params[2])
-            except (IndexError, ValueError):
-                pass
-            return (resource, id)
+
+        if parsed_url.query:
+            query = parse_qs(parsed_url.query)
+            return (resource, query)
+
+        pk = None
+        try:
+            pk = int(path_params[2])
+        except (IndexError, ValueError):
+            pass
+        return (resource, pk)
 
     def _set_headers(self, status):
+        # Notice this Docstring also includes information about the arguments passed to the function
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
         headers on the response
 
@@ -99,7 +96,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         print(post_body)
         
         # Parse the URL
-        (resource,id) = self.parse_url(self.path)
+        (resource, id) = self.parse_url(self.path)
         success = False
 
         if resource == "posts":
