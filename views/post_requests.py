@@ -76,7 +76,7 @@ def delete_post(id):
     """, (id, ))
     
 def create_post(new_post):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
         
         db_cursor.execute("""
