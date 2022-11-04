@@ -107,7 +107,7 @@ def get_all_posts():
           p.image_url,
           p.content,
           p.approved
-      FROM Post p               
+      FROM Posts p               
                       """)
     posts = []
     dataset = db_cursor.fetchall()
