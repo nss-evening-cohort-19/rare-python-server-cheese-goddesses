@@ -42,7 +42,7 @@ def update_post(id, new_post):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Post
+        UPDATE Posts
             SET
                 user_id = ?,
                 category_id = ?,
@@ -65,21 +65,22 @@ def update_post(id, new_post):
     else:
         # Forces 204 response by main module
         return True
+    
 def delete_post(id):
   """Delete Post"""
   with sqlite3.connect("./db.sqlite3") as conn:
     db_cursor = conn.cursor()
     db_cursor.execute("""
-    DELETE from post
+    DELETE from Posts
     WHERE id = ?                
     """, (id, ))
     
 def create_post(new_post):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
         
         db_cursor.execute("""
-        INSERT INTO Post
+        INSERT INTO Posts
             ( user_id, category_id, title, publication_date, image_url, content, approved )
         VALUES
             ( ?, ?, ?, ?, ?, ?, ?);
@@ -131,7 +132,7 @@ def get_single_post(id):
             p.image_url,
             p.content,
             p.approved
-        FROM post p
+        FROM Posts p
         WHERE p.id = ?
         """, ( id, ))
 

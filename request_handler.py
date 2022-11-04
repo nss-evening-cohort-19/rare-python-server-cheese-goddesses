@@ -1,10 +1,8 @@
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import (delete_post, get_single_post, get_all_posts, update_post)
+from views import (delete_post, get_single_post, get_all_posts, update_post, create_post)
 from views.user import create_user, login_user
-from views.post_requests import create_post
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -12,7 +10,7 @@ class HandleRequests(BaseHTTPRequestHandler):
     def parse_url(self, path):
         """Parse the url into the resource and id"""
         parsed_url = urlparse(path)
-        path_params = parsed_url.path.split('/')  # ['', 'animals', 1]
+        path_params = parsed_url.path.split('/')
         resource = path_params[1]
 
         if parsed_url.query:
@@ -27,6 +25,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         return (resource, pk)
 
     def _set_headers(self, status):
+        # Notice this Docstring also includes information about the arguments passed to the function
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
         headers on the response
 
