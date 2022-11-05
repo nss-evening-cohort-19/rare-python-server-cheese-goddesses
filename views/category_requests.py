@@ -92,15 +92,15 @@ def get_single_category(id):
       conn.row_factory = sqlite3.Row
       db_cursor = conn.cursor()
       db_cursor.execute("""
-        SELECT
-            c.id,
-            c.label
-        FROM Categories c
-        WHERE c.id = ?
-        """, (id, ))
+      SELECT
+          c.id,
+          c.label
+      FROM Categories c
+      WHERE c.id = ?
+      """, ( id, ))
 
       data = db_cursor.fetchone()
 
-      category = Category(data['id'], data['category'])
+      category = Category(data['id'], data['label'])
 
       return json.dumps(category.__dict__)
