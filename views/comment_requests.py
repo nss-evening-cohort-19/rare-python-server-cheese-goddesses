@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Comment
 
+
 COMMENTS = [
   {
         "id": 1,
@@ -51,3 +52,12 @@ def get_single_comment(id):
                           data['content'])
 
         return json.dumps(comment.__dict__)
+
+def delete_comment(id):
+  """Delete Comment"""
+  with sqlite3.connect("./db.sqlite3") as conn:
+    db_cursor = conn.cursor()
+    db_cursor.execute("""
+    DELETE from Comments
+    WHERE id = ?                
+    """, (id, ))

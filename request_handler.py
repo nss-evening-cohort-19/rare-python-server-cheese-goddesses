@@ -2,7 +2,7 @@ from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (delete_post, get_single_post, get_all_posts, update_post, create_post)
-from views.comment_requests import (get_single_comment, get_all_comments)
+from views.comment_requests import (get_single_comment, get_all_comments,delete_comment)
 from views.user import create_user, login_user
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -121,6 +121,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
         if resource == "posts":
             delete_post(id)
+        if resource == "comments":
+            delete_comment(id)    
         self.wfile.write("".encode())
 
 
