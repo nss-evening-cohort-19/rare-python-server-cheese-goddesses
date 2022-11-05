@@ -1,7 +1,17 @@
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import (delete_post, get_single_post, get_all_posts, update_post, create_post)
+from views import (delete_post,
+                   get_single_post, 
+                   get_all_posts, 
+                   update_post, 
+                   create_post, 
+                   create_comment, 
+                   get_single_category, 
+                   get_all_categories, 
+                   create_category, 
+                   update_category,
+                   delete_category)
 from views.user import create_user, login_user
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -60,6 +70,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+            if resource == "categories":
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
         self.wfile.write(response.encode())
 
 
@@ -68,23 +83,28 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
-        
         post_body = json.loads(post_body)
-        
         (resource, id) = self.parse_url(self.path)
         
         new_post = None
-        
         if resource == "posts":
             new_post = create_post(post_body)
-            
         self.wfile.write(f"{new_post}".encode())
-
+        
+        new_comment = None
+        if resource == "comments":
+            new_comment = create_comment(post_body)
+        self.wfile.write(f"{new_comment}".encode())
+        
+        new_category = None
+        if resource == "categories":
+            new_category = create_category(post_body)
+        self.wfile.write(f"{new_category}".encode())
+        response = None
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
-
         self.wfile.write(response.encode())
 
     def do_PUT(self):
@@ -101,8 +121,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-
         # rest of the elif's
+        elif resource == "categories":
+            success = update_category(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -115,6 +136,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
         if resource == "posts":
             delete_post(id)
+        if resource == "categories":
+            delete_category(id)
         self.wfile.write("".encode())
 
 

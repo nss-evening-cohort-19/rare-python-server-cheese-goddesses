@@ -1,0 +1,10 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "Rare",
+      "database": "${workspaceFolder:rare-python-server-cheese-goddesses}/db.sqlite3"
+    }
+  ]
+}
