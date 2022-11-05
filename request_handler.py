@@ -11,9 +11,10 @@ from views import (delete_post,
                    get_all_categories, 
                    create_category, 
                    update_category,
-                   delete_category)
-from views.user import create_user, login_user
-
+                   delete_category,
+                   get_single_comment, get_all_comments, 
+                   create_user, 
+                   login_user)
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -59,7 +60,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """GET Posts"""
+        """GET Posts and comments"""
         self._set_headers(200)
         response = {}
         parsed = self.parse_url(self.path)
@@ -75,6 +76,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
+            elif resource == "comments":
+                if id is not None:
+                    response = f"{get_single_comment(id)}"
+                else:
+                    response = f"{get_all_comments()}"
         self.wfile.write(response.encode())
 
 
@@ -103,6 +109,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = None
         if resource == 'login':
             response = login_user(post_body)
+                 
         if resource == 'register':
             response = create_user(post_body)
         self.wfile.write(response.encode())
