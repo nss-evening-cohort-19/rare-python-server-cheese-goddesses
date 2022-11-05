@@ -12,6 +12,7 @@ COMMENTS = [
 ]
 
 def update_comment(id, new_comment):
+    """PUT method to update comment"""
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
         
