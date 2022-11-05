@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Comment
 
+
 COMMENTS = [
   {
         "id": 1,
@@ -65,3 +66,12 @@ def create_comment(new_comment):
         id = db_cursor.lastrowid
         new_comment['id'] = id
     return json.dumps(new_comment)
+
+def delete_comment(id):
+  """Delete Comment"""
+  with sqlite3.connect("./db.sqlite3") as conn:
+    db_cursor = conn.cursor()
+    db_cursor.execute("""
+    DELETE from Comments
+    WHERE id = ?                
+    """, (id, ))

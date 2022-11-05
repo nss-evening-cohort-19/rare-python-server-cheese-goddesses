@@ -12,9 +12,11 @@ from views import (delete_post,
                    create_category, 
                    update_category,
                    delete_category,
-                   get_single_comment, get_all_comments, 
+                   get_single_comment, 
+                   get_all_comments, 
                    create_user, 
-                   login_user)
+                   login_user,
+                   delete_comment)
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -145,6 +147,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         if resource == "categories":
             delete_category(id)
+        if resource == "comments":
+            delete_comment(id)    
         self.wfile.write("".encode())
 
 
