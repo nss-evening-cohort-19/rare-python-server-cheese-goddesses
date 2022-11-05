@@ -2,6 +2,7 @@ from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (delete_post, get_single_post, get_all_posts, update_post, create_post)
+from views.comment_requests import update_comment
 from views.user import create_user, login_user
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -101,6 +102,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
+            
+        if resource == "comments":
+            success = update_comment(id, post_body)
 
         # rest of the elif's
 
@@ -108,6 +112,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             self._set_headers(204)
         else:
             self._set_headers(404)
+            
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
