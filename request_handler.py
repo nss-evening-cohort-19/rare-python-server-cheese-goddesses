@@ -2,6 +2,7 @@ from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (delete_post, get_single_post, get_all_posts, update_post, create_post)
+from views.comment_requests import (get_single_comment, get_all_comments)
 from views.user import create_user, login_user
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -49,7 +50,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """GET Posts"""
+        """GET Posts and comments"""
         self._set_headers(200)
         response = {}
         parsed = self.parse_url(self.path)
@@ -60,6 +61,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+            elif resource == "comments":
+                if id is not None:
+                    response = f"{get_single_comment(id)}"
+                else:
+                    response = f"{get_all_comments()}"
         self.wfile.write(response.encode())
 
 
@@ -77,11 +83,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "posts":
             new_post = create_post(post_body)
-            
-        self.wfile.write(f"{new_post}".encode())
+            self.wfile.write(f"{new_post}".encode())
 
         if resource == 'login':
             response = login_user(post_body)
+                 
         if resource == 'register':
             response = create_user(post_body)
 
