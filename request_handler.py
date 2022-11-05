@@ -93,28 +93,20 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
+        response = ''
         (resource, id) = self.parse_url(self.path)
         
-        new_post = None
         if resource == "posts":
-            new_post = create_post(post_body)
-        self.wfile.write(f"{new_post}".encode())
-        
-        new_comment = None
-        if resource == "comments":
-            new_comment = create_comment(post_body)
-        self.wfile.write(f"{new_comment}".encode())
-        
-        new_category = None
-        if resource == "categories":
-            new_category = create_category(post_body)
-        self.wfile.write(f"{new_category}".encode())
-        response = None
-        if resource == 'login':
+            response = create_post(post_body)
+        elif resource == "comments":
+            response = create_comment(post_body)
+        elif resource == "categories":
+            response = create_category(post_body)
+        elif resource == 'login':
             response = login_user(post_body)
-                 
-        if resource == 'register':
+        elif resource == 'register':
             response = create_user(post_body)
+        
         self.wfile.write(response.encode())
 
     def do_PUT(self):
