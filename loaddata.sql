@@ -110,3 +110,6 @@ VALUES (
   "Lorem ipsum dolor sit amet, consectetur adipiscing",
   True
 );
+
+INSERT INTO Comments ('post_id', 'author_id', 'content') VALUES (2, 5, 'The article is good');
+INSERT INTO Comments ('post_id', 'author_id', 'content') VALUES (3, 6, 'The article is average');
