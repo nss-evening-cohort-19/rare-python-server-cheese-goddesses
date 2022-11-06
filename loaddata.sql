@@ -113,3 +113,5 @@ VALUES (
 
 INSERT INTO Comments ('post_id', 'author_id', 'content') VALUES (2, 5, 'The article is good');
 INSERT INTO Comments ('post_id', 'author_id', 'content') VALUES (3, 6, 'The article is average');
+
+INSERT INTO PostReactions ('user_id', 'reaction_id', 'post_id') VALUES (4, 7, 2);

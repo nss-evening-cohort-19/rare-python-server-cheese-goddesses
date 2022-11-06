@@ -17,7 +17,12 @@ from views import (delete_post,
                    create_user, 
                    login_user,
                    delete_comment,
-                   update_comment)
+                   update_comment,
+                   create_post_reaction,
+                   get_all_post_reactions,
+                   get_single_post_reaction,
+                   update_post_reaction,
+                   delete_post_reaction)
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -84,6 +89,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_comment(id)}"
                 else:
                     response = f"{get_all_comments()}"
+            elif resource == "post_reactions":
+                if id is not None:
+                    response = f"{get_single_post_reaction}"
+                else:
+                    response = f"{get_all_post_reactions}"
         self.wfile.write(response.encode())
 
 
@@ -106,6 +116,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         elif resource == 'register':
             response = create_user(post_body)
+        elif resource == "post_reactions":
+            response = create_post_reaction(post_body)
         
         self.wfile.write(response.encode())
 
@@ -130,6 +142,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         # rest of the elif's
         if resource == "categories":
             success = update_category(id, post_body)
+            
+        if resource == "post_reactions":
+            success = update_post_reaction(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -147,7 +162,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "categories":
             delete_category(id)
         if resource == "comments":
-            delete_comment(id)    
+            delete_comment(id)
+        if resource == "post_reactions":
+            delete_post_reaction(id)
         self.wfile.write("".encode())
 
 
