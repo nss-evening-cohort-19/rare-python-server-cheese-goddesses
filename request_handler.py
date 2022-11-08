@@ -91,9 +91,9 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_all_comments()}"
             elif resource == "post_reactions":
                 if id is not None:
-                    response = f"{get_single_post_reaction}"
+                    response = f"{get_single_post_reaction(id)}"
                 else:
-                    response = f"{get_all_post_reactions}"
+                    response = f"{get_all_post_reactions()}"
         self.wfile.write(response.encode())
 
 

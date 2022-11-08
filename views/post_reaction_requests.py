@@ -41,7 +41,7 @@ def get_all_post_reactions():
         post_reaction = PostReaction(row['id'], row['user_id'], row['reaction_id'],
                         row['post_id'])
         
-        post_reactions.append(post_reactions.__dict__)
+        post_reactions.append(post_reaction.__dict__)
         
     return json.dumps(post_reactions)
   
