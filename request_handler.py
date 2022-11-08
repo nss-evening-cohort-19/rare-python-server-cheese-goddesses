@@ -7,22 +7,28 @@ from views import (delete_post,
                    update_post, 
                    create_post, 
                    create_comment, 
+                   get_single_comment, 
+                   get_all_comments, 
+                   delete_comment,
+                   update_comment,
                    get_single_category, 
                    get_all_categories, 
                    create_category, 
                    update_category,
                    delete_category,
-                   get_single_comment, 
-                   get_all_comments, 
                    create_user, 
                    login_user,
-                   delete_comment,
-                   update_comment,
                    create_post_reaction,
                    get_all_post_reactions,
                    get_single_post_reaction,
                    update_post_reaction,
-                   delete_post_reaction)
+                   delete_post_reaction,
+                   create_subscription,
+                   get_all_subscriptions,
+                   get_single_subscription,
+                   update_subscription,
+                   delete_subscription
+                   )
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -94,6 +100,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post_reaction(id)}"
                 else:
                     response = f"{get_all_post_reactions()}"
+            elif resource == "subscriptions":
+                if id is not None:
+                    response = f"{get_single_subscription(id)}"
+                else:
+                    response = f"{get_all_subscriptions()}"
         self.wfile.write(response.encode())
 
 
@@ -112,6 +123,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_comment(post_body)
         elif resource == "categories":
             response = create_category(post_body)
+        elif resource == "subscriptions":
+            response = create_subscription(post_body)
         elif resource == 'login':
             response = login_user(post_body)
         elif resource == 'register':
@@ -127,8 +140,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
         
-        print(post_body)
-        
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
         success = False
@@ -138,13 +149,14 @@ class HandleRequests(BaseHTTPRequestHandler):
             
         if resource == "comments":
             success = update_comment(id, post_body)
-
-        # rest of the elif's
+            
         if resource == "categories":
             success = update_category(id, post_body)
             
         if resource == "post_reactions":
             success = update_post_reaction(id, post_body)
+        if resource == "subscriptions":
+            success = update_subscription(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -165,6 +177,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_comment(id)
         if resource == "post_reactions":
             delete_post_reaction(id)
+            delete_comment(id)  
+        if resource == "subscriptions":
+            delete_subscription(id)  
         self.wfile.write("".encode())
 
 

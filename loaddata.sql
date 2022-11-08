@@ -114,4 +114,9 @@ VALUES (
 INSERT INTO Comments ('post_id', 'author_id', 'content') VALUES (2, 5, 'The article is good');
 INSERT INTO Comments ('post_id', 'author_id', 'content') VALUES (3, 6, 'The article is average');
 
+<<<<<<< HEAD
 INSERT INTO PostReactions ('user_id', 'reaction_id', 'post_id') VALUES (4, 7, 2);
+=======
+INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on') VALUES (2, 5, "11/9/2022");
+INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on') VALUES (1, 4, "10/12/2022");
+>>>>>>> main
