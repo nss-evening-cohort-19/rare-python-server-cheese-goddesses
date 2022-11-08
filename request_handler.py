@@ -18,6 +18,11 @@ from views import (delete_post,
                    delete_category,
                    create_user, 
                    login_user,
+                   create_post_reaction,
+                   get_all_post_reactions,
+                   get_single_post_reaction,
+                   update_post_reaction,
+                   delete_post_reaction,
                    create_subscription,
                    get_all_subscriptions,
                    get_single_subscription,
@@ -90,6 +95,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_comment(id)}"
                 else:
                     response = f"{get_all_comments()}"
+            elif resource == "post_reactions":
+                if id is not None:
+                    response = f"{get_single_post_reaction(id)}"
+                else:
+                    response = f"{get_all_post_reactions()}"
             elif resource == "subscriptions":
                 if id is not None:
                     response = f"{get_single_subscription(id)}"
@@ -119,6 +129,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         elif resource == 'register':
             response = create_user(post_body)
+        elif resource == "post_reactions":
+            response = create_post_reaction(post_body)
         
         self.wfile.write(response.encode())
 
@@ -141,6 +153,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "categories":
             success = update_category(id, post_body)
             
+        if resource == "post_reactions":
+            success = update_post_reaction(id, post_body)
         if resource == "subscriptions":
             success = update_subscription(id, post_body)
 
@@ -160,6 +174,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "categories":
             delete_category(id)
         if resource == "comments":
+            delete_comment(id)
+        if resource == "post_reactions":
+            delete_post_reaction(id)
             delete_comment(id)  
         if resource == "subscriptions":
             delete_subscription(id)  
