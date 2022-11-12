@@ -28,7 +28,9 @@ from views import (delete_post,
                    get_single_subscription,
                    update_subscription,
                    delete_subscription,
-                   get_category_by_post
+                   get_category_by_post,
+                   get_single_user,
+                   get_all_users
                    )
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -106,10 +108,16 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_subscription(id)}"
                 else:
                     response = f"{get_all_subscriptions()}"
+            elif resource == "users":
+                if id is not None:
+                    response = f"{get_single_user(id)}"
+                else:
+                    response = f"{get_all_users()}"
         else:  
             (resource, query) = parsed
             if query.get('category_id') and resource == 'posts':
                 response = get_category_by_post(query['category_id'])
+            
         self.wfile.write(response.encode())
 
 
