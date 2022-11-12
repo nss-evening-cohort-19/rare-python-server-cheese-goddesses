@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Category
+from models import Category, Post
 
 CATEGORY = [
   {
@@ -104,3 +104,4 @@ def get_single_category(id):
       category = Category(data['id'], data['label'])
 
       return json.dumps(category.__dict__)
+    
