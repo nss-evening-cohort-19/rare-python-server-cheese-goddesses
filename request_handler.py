@@ -29,7 +29,8 @@ from views import (delete_post,
                    update_subscription,
                    delete_subscription,
                    get_single_user,
-                   get_all_users
+                   get_all_users,
+                   get_comments_by_post_id
                    )
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -112,6 +113,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
+                    
+        else: # There is a ? in the path, run the query param functions
+                (resource, query) = parsed
+                if query.get('post_id') and resource == 'comments':
+                    response = get_comments_by_post_id(query['post_id'][0])   
         self.wfile.write(response.encode())
 
 
